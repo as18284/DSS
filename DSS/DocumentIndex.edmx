@@ -1,0 +1,203 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DocumentIndexModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DocumentMetadata">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentId" Type="int" />
+          <Property Name="DocumentAuthor" Type="nvarchar(max)" />
+          <Property Name="DocumentLastEditTime" Type="datetime" />
+          <Property Name="DocumentAbsolutePath" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="NodeIndex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Word" Type="nvarchar(max)" />
+          <Property Name="PositionsList" Type="int" />
+        </EntityType>
+        <EntityType Name="WordPosition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="DocumentIndex" Type="int" />
+          <Property Name="Position" Type="int" />
+          <Property Name="NextPosition" Type="int" />
+        </EntityType>
+        <Association Name="FK__NodeIndex__Posit__71D1E811">
+          <End Role="WordPosition" Type="Self.WordPosition" Multiplicity="0..1" />
+          <End Role="NodeIndex" Type="Self.NodeIndex" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NodeIndex">
+              <PropertyRef Name="PositionsList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPosit__NextP__6EF57B66">
+          <End Role="WordPosition" Type="Self.WordPosition" Multiplicity="0..1" />
+          <End Role="WordPosition1" Type="Self.WordPosition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPosition1">
+              <PropertyRef Name="NextPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DocumentIndexModelStoreContainer">
+          <EntitySet Name="DocumentMetadata" EntityType="Self.DocumentMetadata" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NodeIndex" EntityType="Self.NodeIndex" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WordPosition" EntityType="Self.WordPosition" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__NodeIndex__Posit__71D1E811" Association="Self.FK__NodeIndex__Posit__71D1E811">
+            <End Role="WordPosition" EntitySet="WordPosition" />
+            <End Role="NodeIndex" EntitySet="NodeIndex" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPosit__NextP__6EF57B66" Association="Self.FK__WordPosit__NextP__6EF57B66">
+            <End Role="WordPosition" EntitySet="WordPosition" />
+            <End Role="WordPosition1" EntitySet="WordPosition" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DocumentIndexModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="NodeIndex">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Word" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PositionsList" Type="Int32" />
+          <NavigationProperty Name="WordPosition" Relationship="Self.FK__NodeIndex__Posit__276EDEB3" FromRole="NodeIndex" ToRole="WordPosition" />
+        </EntityType>
+        <EntityType Name="WordPosition">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="DocumentIndex" Type="Int32" />
+          <Property Name="Position" Type="Int32" />
+          <Property Name="NextPosition" Type="Int32" />
+          <NavigationProperty Name="NodeIndex" Relationship="Self.FK__NodeIndex__Posit__276EDEB3" FromRole="WordPosition" ToRole="NodeIndex" />
+          <NavigationProperty Name="WordPosition1" Relationship="Self.FK__WordPosit__NextP__24927208" FromRole="WordPosition" ToRole="WordPosition1" />
+          <NavigationProperty Name="WordPosition2" Relationship="Self.FK__WordPosit__NextP__24927208" FromRole="WordPosition1" ToRole="WordPosition" />
+        </EntityType>
+        <Association Name="FK__NodeIndex__Posit__276EDEB3">
+          <End Role="WordPosition" Type="Self.WordPosition" Multiplicity="0..1" />
+          <End Role="NodeIndex" Type="Self.NodeIndex" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="NodeIndex">
+              <PropertyRef Name="PositionsList" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__WordPosit__NextP__24927208">
+          <End Role="WordPosition" Type="Self.WordPosition" Multiplicity="0..1" />
+          <End Role="WordPosition1" Type="Self.WordPosition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WordPosition">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WordPosition1">
+              <PropertyRef Name="NextPosition" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DocumentIndexEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="NodeIndex" EntityType="Self.NodeIndex" />
+          <EntitySet Name="WordPosition" EntityType="Self.WordPosition" />
+          <AssociationSet Name="FK__NodeIndex__Posit__276EDEB3" Association="Self.FK__NodeIndex__Posit__276EDEB3">
+            <End Role="WordPosition" EntitySet="WordPosition" />
+            <End Role="NodeIndex" EntitySet="NodeIndex" />
+          </AssociationSet>
+          <AssociationSet Name="FK__WordPosit__NextP__24927208" Association="Self.FK__WordPosit__NextP__24927208">
+            <End Role="WordPosition" EntitySet="WordPosition" />
+            <End Role="WordPosition1" EntitySet="WordPosition" />
+          </AssociationSet>
+          <EntitySet Name="DocumentMetadata" EntityType="DocumentIndexModel.DocumentMetadata" />
+        </EntityContainer>
+        <EntityType Name="DocumentMetadata">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentId" Type="Int32" />
+          <Property Name="DocumentAuthor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentLastEditTime" Type="DateTime" Precision="3" />
+          <Property Name="DocumentAbsolutePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DocumentIndexModelStoreContainer" CdmEntityContainer="DocumentIndexEntities">
+          <EntitySetMapping Name="NodeIndex">
+            <EntityTypeMapping TypeName="DocumentIndexModel.NodeIndex">
+              <MappingFragment StoreEntitySet="NodeIndex">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Word" ColumnName="Word" />
+                <ScalarProperty Name="PositionsList" ColumnName="PositionsList" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WordPosition">
+            <EntityTypeMapping TypeName="DocumentIndexModel.WordPosition">
+              <MappingFragment StoreEntitySet="WordPosition">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DocumentIndex" ColumnName="DocumentIndex" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="NextPosition" ColumnName="NextPosition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentMetadata">
+            <EntityTypeMapping TypeName="DocumentIndexModel.DocumentMetadata">
+              <MappingFragment StoreEntitySet="DocumentMetadata">
+                <ScalarProperty Name="DocumentAbsolutePath" ColumnName="DocumentAbsolutePath" />
+                <ScalarProperty Name="DocumentLastEditTime" ColumnName="DocumentLastEditTime" />
+                <ScalarProperty Name="DocumentAuthor" ColumnName="DocumentAuthor" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
